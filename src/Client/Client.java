@@ -1,31 +1,18 @@
 package Client;
+
 import java.io.*;
 import java.net.*;
-public class Client {
-    public static void main(String[] args) {
-        String serverName = "10.26.14.1"; 
-        int port = 1234; 
-        try {
-            InetAddress serverAddress = InetAddress.getByName(serverName);
-            Socket clientSocket = new Socket(serverAddress, port);
 
-            // For writing to the server
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+public class client {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 1234);
 
-            // For reading from the server
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        InputStream inputStream = socket.getInputStream();
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 
-            // Sending a message to the server
-            out.println("Hello from the client!");
+        String message = in.readLine();
+        System.out.println(message);
 
-            // Receiving a message from the server
-            String response = in.readLine();
-            System.out.println("Server response: " + response);
-
-            // Close the connection
-            clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        socket.close();
     }
 }
